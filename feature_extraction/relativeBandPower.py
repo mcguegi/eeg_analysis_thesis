@@ -13,6 +13,7 @@ from scipy import signal
 sns.set(font_scale=1.2)
 from scipy.integrate import simps
 
+y1 =T4
 # Passing from ndarray to array 
 y1_s = y1.ravel()
 
@@ -86,7 +87,7 @@ bands = {
                 'high': 30
                 },
         'delta' : {
-                'low': 0.5,
+                'low': 0,
                 'high': 4
                 },
         'gamma' : {
@@ -99,6 +100,7 @@ bands = {
                 },
         }
 
+total = 0;
 
 for i in bands:
     idx_band = np.logical_and(freqs >= bands[i]['low'], freqs <= bands[i]['high'])
@@ -107,5 +109,8 @@ for i in bands:
     total_power = simps(psd, dx=freq_res)
     band_rel_power = band_power / total_power
     print(band_rel_power)
+    total += band_rel_power
+
+print(total)
     
 

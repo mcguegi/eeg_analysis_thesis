@@ -11,7 +11,8 @@ import mne, re
 import pandas as pd
 import numpy.fft as fft
 import numpy as np
-
+from scipy import signal
+from scipy.integrate import simps
 
 
 path = 'C:/Users/Camila/Documents/Tesis/raw_data/healthy/'
@@ -22,7 +23,7 @@ def is_edf_file(file_name):
 
 
 # revisa si es un canal valido
-match_regex = lambda channel_name : re.compile(r'(P|F|O|T)').search(channel_name)
+match_regex = lambda channel_name : re.compile(r'(P|F|O|T|C)').search(channel_name)
 
 # valida la extension del fichero
 is_edf_file = lambda file_name : file_name[len(file_name)-3:len(file_name)] == "edf"
@@ -60,7 +61,7 @@ bands = {
                 },
         'gamma' : {
                 'low': 30,
-                'high': 1000
+                'high': 100
                 },
         'theta' : {
                 'low': 4,
@@ -115,4 +116,4 @@ for file_name in edf_files:
     # generating a df per exam and exporting data to csv    
     merged = pd.concat(channels_data, ignore_index=True)    
     
- merged.to_csv("healthy.csv",index=False)
+merged.to_csv("healthy.csv",index=False)
