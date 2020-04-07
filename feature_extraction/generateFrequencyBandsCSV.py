@@ -28,6 +28,7 @@ match_regex = lambda channel_name : re.compile(r'(P|F|O|T|C)').search(channel_na
 # valida la extension del fichero
 is_edf_file = lambda file_name : file_name[len(file_name)-3:len(file_name)] == "edf"
 
+real_list_channels = ['EEG FP1-REF','EEG FP2-REF','EEG F3-REF','EEG F4-REF','EEG C3-REF','EEG C4-REF','EEG P3-REF','EEG P4-REF','EEG O1-REF','EEG O2-REF','EEG F7-REF','EEG F8-REF','EEG T3-REF','EEG T4-REF','EEG T5-REF','EEG T6-REF','EEG A1-REF','EEG A2-REF','EEG FZ-REF','EEG CZ-REF','EEG PZ-REF']
 
 files = os.listdir(path)
 
@@ -74,14 +75,19 @@ for file_name in edf_files:
 
     datos_edf = mne.io.read_raw_edf(path+file_name, preload=True, stim_channel=None)
 
-    list_channels = list(
-        filter(
-            lambda channel_name : len(channel_name) > 4 and channel_name[0:3] == "EEG", 
-            datos_edf.info["ch_names"]
-        )
-    )
-    
-    list_channels = [channel for channel in list_channels if match_regex(channel[4])]
+# =============================================================================
+#     list_channels = list(
+#         filter(
+#             lambda channel_name : len(channel_name) > 4 and channel_name[0:3] == "EEG", 
+#             datos_edf.info["ch_names"]
+#         )
+#     )
+#     
+#     list_channels = [channel for channel in list_channels if match_regex(channel[4])]
+# =============================================================================
+    list_channels = list(datos_edf.info["ch_names"])
+    list_channels = list(set(list_channels) - (set(list_channels) - set(real_list_channels)))
+    list_channels = [channel for channel in list_channels]
     fs = datos_edf.info['sfreq']
     
     

@@ -53,6 +53,6 @@ loss
 
 
 paciente_test = torch.Tensor([[0.08784774309110274,0.07233267054347474,0.658569550747688,0.04957907325400277,0.12731236330060244]])
-prediction = "Epiléptico" if model(enfermo) > 0.5 else "No Epiléptico"
-print(prediction)
+prediction = "Epiléptico" if model(paciente_test) > 0.5 else "No Epiléptico"
+print(model(paciente_test))
 

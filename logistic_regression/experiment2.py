@@ -37,30 +37,22 @@ eeg_dataset.info()
 
 sb.heatmap(eeg_dataset.corr())  
 
+X = eeg_dataset[['alpha','betha','delta','gamma','theta']].values
+y = eeg_dataset[['class']].values.ravel()
+
 # Filtrando los sanos y los epilépticos
 healthy = eeg_dataset.loc[y == 0]
-
 unhealthy = eeg_dataset.loc[y == 1]
-
-
-#
-
-plt.scatter(unhealthy['delta'],unhealthy['alpha'],s=10,label="Epilépticos")
-plt.scatter(healthy['delta'],healthy['alpha'],s=10,label="Sanos")
-plt.legend()
-plt.show()
-
-X = eeg_dataset[['alpha','betha','delta','gamma','theta']].values
-y = eeg_dataset[['class']].values
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=.7,test_size = .3, random_state=25)
 
-LogReg = LogisticRegression()
+LogReg = LogisticRegression(C=1,random_state=20,solver='liblinear',penalty='l1')
 LogReg.fit(X_train, y_train)
 
-y_pred = LogReg.predict(X_test)
+y_pred = LogReg.predict(X_train)
 
 
-confusion_matrix = confusion_matrix(y_test, y_pred)
+confusion_matrix = confusion_matrix(y_train, y_pred)
 print(confusion_matrix)
-print(classification_report(y_test, y_pred))
+print(classification_report(y_train, y_pred))
+print(LogReg.score(X_train,y_train))
