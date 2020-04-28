@@ -20,6 +20,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics 
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import plot_confusion_matrix
+import seaborn as sns
 
 rcParams['figure.figsize'] = 10, 8
 sb.set_style('whitegrid')
@@ -56,3 +58,22 @@ confusion_matrix = confusion_matrix(y_train, y_pred)
 print(confusion_matrix)
 print(classification_report(y_train, y_pred))
 print(LogReg.score(X_train,y_train))
+
+columnas = ['No epiléptico','Epiléptico']
+
+df_cm = pd.DataFrame(confusion_matrix,index=columnas, columns=columnas)
+
+grafica = sns.heatmap(df_cm,cmap=sns.color_palette("cubehelix", 8),annot=True,fmt='g')
+plt.ylabel('Valores verdaderos')
+plt.xlabel('Predicciones')
+grafica.set(xlabel='Verdaderos',ylabel='Predicciones')
+plt.show()
+
+accuracy = (tp+tn)/(tp+tn+fp+fn)
+recall = tp/(tp+fn)
+precision = tp/(tp+fp)
+f1 = (2*recall*precision)/(recall+precision)
+
+from sklearn.metrics import precision,recall,f1_score
+
+precision(y_test, y_pred)

@@ -29,8 +29,8 @@ url = "C:/Users/Camila/Documents/Tesis/csv/relative/data.csv"
 eeg_dataset = pd.read_csv(url,error_bad_lines=False)
 eeg_dataset.head()
 
-X = eeg_dataset.iloc[200:400,3:8]
-X = X.append(eeg_dataset.iloc[620:820,3:8])
+X = eeg_dataset.iloc[210:420,3:8]
+X = X.append(eeg_dataset.iloc[630:840,3:8])
 alpha_gamma = X['alpha']*X['gamma']
 deltha_betha = X['delta']*X['betha']
 X['alpha_gamma'] = alpha_gamma
@@ -39,8 +39,8 @@ X['mean'] = X[['alpha','betha','delta','gamma','theta']].mean(axis=1)
 X.reset_index()
 X = X.values
 
-y = eeg_dataset.iloc[200:400,2]
-y = y.append(eeg_dataset.iloc[620:820,2])
+y = eeg_dataset.iloc[210:420,2]
+y = y.append(eeg_dataset.iloc[630:840,2])
 y.reset_index()
 y = y.values
 
@@ -57,7 +57,7 @@ x_test=sc_X.transform(x_test)
 
 #Training the Logistic Model
 from sklearn.linear_model import LogisticRegression
-classifier = LogisticRegression(C=1,penalty='elasticnet',solver='saga', l1_ratio=0.3, max_iter=50)
+classifier = LogisticRegression(C=1,penalty='elasticnet',solver='saga', l1_ratio=0.3, max_iter=1000)
 classifier.fit(x_train, y_train)
 
 #Predicting the Test Set Result
@@ -71,3 +71,13 @@ classifier.score(x_train,y_train)
 print(cm)
 print(classifier.score(x_train,y_train))
 print(classification_report(y_test, y_pred))
+
+columnas = ['No epiléptico','Epiléptico']
+
+df_cm = pd.DataFrame(cm,index=columnas, columns=columnas)
+
+grafica = sns.heatmap(df_cm,cmap=sns.color_palette("cubehelix", 8),annot=True,fmt='g')
+plt.ylabel('Valores verdaderos')
+plt.xlabel('Predicciones')
+grafica.set(xlabel='Verdaderos',ylabel='Predicciones')
+plt.show()

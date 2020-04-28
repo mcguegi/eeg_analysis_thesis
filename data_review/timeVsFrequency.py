@@ -61,3 +61,18 @@ plt.grid()
 plt.title ('Señal en el dominio de ..')
 plt.xlabel ('Frecuencia (Hz)')
 plt.ylabel ('Amplitud')
+
+
+
+sns.set(palette="deep")
+f, axes = plt.subplots(5, 1, figsize=(7, 7), sharex=True)
+sns.despine(left=True)
+
+sns.lineplot(data=F3, ax=axes[0],legend=False).set_title('F3')
+sns.lineplot(data=C3, ax=axes[1],legend=False).set_title('C3')
+sns.lineplot(data=P3, ax=axes[2],legend=False).set_title('P3')
+sns.lineplot(data=T4, ax=axes[3],legend=False).set_title('T4')
+sns.lineplot(data=F7, ax=axes[4],legend=False).set_title('F7')
+
+plt.setp(axes, yticks=[])
+plt.tight_layout()

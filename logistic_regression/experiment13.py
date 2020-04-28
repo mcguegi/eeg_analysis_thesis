@@ -22,6 +22,7 @@ from sklearn import metrics
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import plot_confusion_matrix
 
 rcParams['figure.figsize'] = 10, 8
 sb.set_style('whitegrid')
@@ -66,17 +67,14 @@ print(classification_report(y_test, y_pred))
 
 
 
-# Plot non-normalized confusion matrix
-titles_options = [("Matriz de confusión sin normalizar", None),
-                  ("Matriz de confusión normalizada", 'true')]
-for title, normalize in titles_options:
-    disp = plot_confusion_matrix(classifier, x_test, y_test,
-                                 cmap=plt.cm.Blues,
-                                 labels= ['No epiléptico','Epiléptico'],
-                                 normalize=normalize)
-    disp.ax_.set_title(title)
+columnas = ['No epiléptico','Epiléptico']
 
-    print(title)
-    print(disp.confusion_matrix)
+df_cm = pd.DataFrame(cm,index=columnas, columns=columnas)
 
+grafica = sns.heatmap(df_cm,cmap=sns.color_palette("cubehelix", 8),annot=True,fmt='g')
+plt.ylabel('Valores verdaderos')
+plt.xlabel('Predicciones')
+grafica.set(xlabel='Verdaderos',ylabel='Predicciones')
 plt.show()
+
+fig.savefig('C:/Users/Camila/Documents/Tesis/Proyecto/PlantillaTesis/Figures/regLog/percentual/cm_experiment13.png', format='png', dpi=1200)

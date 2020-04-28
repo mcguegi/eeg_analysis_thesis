@@ -29,13 +29,13 @@ url = "C:/Users/Camila/Documents/Tesis/csv/relative/data.csv"
 eeg_dataset = pd.read_csv(url,error_bad_lines=False)
 eeg_dataset.head()
 
-X = eeg_dataset.iloc[0:100,3:8]
-X = X.append(eeg_dataset.iloc[420:520,3:8])
+X = eeg_dataset.iloc[0:105,3:8]
+X = X.append(eeg_dataset.iloc[420:525,3:8])
 X = X.values
 
 
-y = eeg_dataset.iloc[0:100,2]
-y = y.append(eeg_dataset.iloc[420:520,2])
+y = eeg_dataset.iloc[0:105,2]
+y = y.append(eeg_dataset.iloc[420:525,2])
 y = y.values
 
 
@@ -65,3 +65,13 @@ classifier.score(x_train,y_train)
 print(cm)
 print(classifier.score(x_train,y_train))
 print(classification_report(y_test, y_pred))
+
+columnas = ['No epiléptico','Epiléptico']
+
+df_cm = pd.DataFrame(cm,index=columnas, columns=columnas)
+
+grafica = sns.heatmap(df_cm,cmap=sns.color_palette("cubehelix", 8),annot=True,fmt='g')
+plt.ylabel('Valores verdaderos')
+plt.xlabel('Predicciones')
+grafica.set(xlabel='Verdaderos',ylabel='Predicciones')
+plt.show()
